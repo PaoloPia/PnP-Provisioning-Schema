@@ -1,0 +1,521 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xsd:schema targetNamespace="http://schemas.dev.office.com/PnP/2019/06/ProvisioningLogic"
+    elementFormDefault="qualified"
+    xmlns="http://schemas.dev.office.com/PnP/2019/06/ProvisioningLogic"
+    xmlns:pnpl="http://schemas.dev.office.com/PnP/2019/06/ProvisioningLogic"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+
+  <!--
+  This XML schema defines the custom logic rules that can be applied
+  during provisioning of PnP Provisioning Templates
+  -->
+
+  <xsd:element name="ProvisioningLogic">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines the root element of a PnP Provisioning Logic
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexType>
+      <xsd:choice minOccurs="0" maxOccurs="unbounded">
+
+        <xsd:element name="Variable" type="pnpl:Variable">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Declares a local variable
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        
+        <xsd:element name="SetVariable" type="pnpl:SetVariable">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Defines a setter for a Variable
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+
+        <xsd:element name="ForEach" type="pnpl:ForEach">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Defines a for-each section
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+
+        <xsd:element name="While" type="pnpl:While">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Defines a while section
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        
+        <xsd:element name="Choose" type="pnpl:Choose">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Defines a choose section
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        
+        <xsd:element name="If" type="pnpl:If">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Defines an if section
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        
+        <xsd:element name="OnBehalf" type="pnpl:OnBehalf">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Defines an if section
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+
+        <xsd:element name="Retry" type="pnpl:Retry">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Defines a retry section
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        
+        <xsd:element name="ExceptionScope" type="pnpl:ExceptionScope">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              Defines a section that will be executed with a custom exception handling logic
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:element>
+        
+      </xsd:choice>
+    </xsd:complexType>
+  </xsd:element>
+
+  <xsd:complexType name="ForEach" mixed="true">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a For-Each section, which will iterate over the items of a Data Source
+      </xsd:documentation>
+    </xsd:annotation>
+    <xsd:complexContent>
+      <xsd:extension base="pnpl:BaseLogicElement">
+
+        <xsd:sequence>
+          <xsd:element name="Sort" minOccurs="0" maxOccurs="unbounded">
+            <xsd:complexType>
+              <xsd:attribute name="Select" type="xsd:string" use="required">
+                <xsd:annotation>
+                  <xsd:documentation xml:lang="en">
+                    The field/property of the datasource to use for sorting
+                  </xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+              <xsd:attribute name="Order" use="optional" default="Ascending">
+                <xsd:annotation>
+                  <xsd:documentation xml:lang="en">
+                    The sort order to apply to the sorting field
+                  </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                  <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="Ascending">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="en">
+                          The sort order will be ascending
+                        </xsd:documentation>
+                      </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="Descending">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="en">
+                          The sort order will be descending
+                        </xsd:documentation>
+                      </xsd:annotation>
+                    </xsd:enumeration>
+                  </xsd:restriction>
+                </xsd:simpleType>
+              </xsd:attribute>
+              <xsd:attribute name="DataType" use="optional">
+                <xsd:annotation>
+                  <xsd:documentation xml:lang="en">
+                    Defines the data type of the field used for sorting data
+                  </xsd:documentation>
+                </xsd:annotation>
+                <xsd:simpleType>
+                  <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="String">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="en">
+                          The sorting field is a String
+                        </xsd:documentation>
+                      </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="Integer">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="en">
+                          The sorting field is an Integer
+                        </xsd:documentation>
+                      </xsd:annotation>
+                    </xsd:enumeration>
+                    <xsd:enumeration value="DateTime">
+                      <xsd:annotation>
+                        <xsd:documentation xml:lang="en">
+                          The sorting field is a DateTime
+                        </xsd:documentation>
+                      </xsd:annotation>
+                    </xsd:enumeration>
+                  </xsd:restriction>
+                </xsd:simpleType>
+              </xsd:attribute>
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:sequence>
+
+        <xsd:attribute name="Select" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              The datasource to iterate over while executing the For-Each logic
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="While" mixed="true">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a While section, which will iterate based on a Test condition
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexContent>
+      <xsd:extension base="pnpl:BaseLogicElement">
+
+        <xsd:sequence>
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="SetVariable" type="pnpl:SetVariable">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Sets the value of a variable
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:element>
+        </xsd:sequence>
+
+        <xsd:attribute name="Test" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              The rule to apply to determine wheter to exit from the While loop or not
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="Choose" mixed="true">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a Choose section, which will select the Case to execute and will skip all the others
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="Case" minOccurs="1" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            A case to evaluate for executing the child template
+          </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="pnpl:BaseLogicElement">
+              <xsd:attribute name="Test" type="xsd:string">
+                <xsd:annotation>
+                  <xsd:documentation xml:lang="en">
+                    The rule to apply to determine wheter to execute the Case or not
+                  </xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+
+      </xsd:element>
+      <xsd:element name="Otherwise" minOccurs="0" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            The default action to execute if none of the previous Case verified the Test rule
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="If">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines an If statement
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexContent>
+      <xsd:extension base="pnpl:BaseLogicElement">
+        <xsd:attribute name="Test" type="xsd:string" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              The rule to check to determine wheter to execute the If content or not
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="OnBehalf">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a section that will be execute OnBehalf of the provided user
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexContent>
+      <xsd:extension base="pnpl:BaseLogicElement">
+
+        <xsd:attribute name="User" type="xsd:string">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              The User that will execute the child template
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="Retry" mixed="true">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a section that will be executed with a custom retry logic
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexContent>
+      <xsd:extension base="pnpl:BaseLogicElement">
+
+        <xsd:attribute name="HttpStatusCodes" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              A comma separated list of HTTP status codes that make the logic retry. Something like 404,429,401 etc.
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+        <xsd:attribute name="RetryIf" type="xsd:string" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              A rule that determines whether to repeat the action or not
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+        <xsd:attribute name="RetryAfter" type="xsd:int" use="optional">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              The number of seconds to wait before a retry
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+        <xsd:attribute name="MaxIterations" type="xsd:int" use="required">
+          <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+              The maximum number of iterations to execute
+            </xsd:documentation>
+          </xsd:annotation>
+        </xsd:attribute>
+
+      </xsd:extension>
+    </xsd:complexContent>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="ExceptionScope" mixed="true">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a section that will be executed with a custom exception handling logic
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="Try" minOccurs="1" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines the action to try to execute
+          </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="pnpl:BaseLogicElement">
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+
+      </xsd:element>
+      <xsd:element name="Catch" minOccurs="0" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines an exception catch rule
+          </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="pnpl:BaseLogicElement">
+              <xsd:attribute name="Exception" type="xsd:string" use="optional">
+                <xsd:annotation>
+                  <xsd:documentation xml:lang="en">
+                    Defines the exception to catch, if any
+                  </xsd:documentation>
+                </xsd:annotation>
+              </xsd:attribute>
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+
+      </xsd:element>
+      <xsd:element name="Finally" minOccurs="1" maxOccurs="1">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines an section that will be executed whether there was an exception or not
+          </xsd:documentation>
+        </xsd:annotation>
+
+        <xsd:complexType>
+          <xsd:complexContent>
+            <xsd:extension base="pnpl:BaseLogicElement">
+            </xsd:extension>
+          </xsd:complexContent>
+        </xsd:complexType>
+
+      </xsd:element>
+    </xsd:sequence>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="Variable" mixed="true">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Declares a local variable
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:attribute name="Name" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Defines the name of the variable
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+    <xsd:attribute name="Type" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Defines the type of the variable
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="String">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Defines a String variable
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="Integer">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Defines an Integer variable
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="Boolean">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Defines a Boolean variable
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="DateTime">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Defines an DateTime variable
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+  </xsd:complexType>
+
+  <xsd:complexType name="SetVariable" mixed="true">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Assigns a value to a Variable
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:attribute name="Name" type="xsd:string" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Defines the name of the variable
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="BaseLogicElement" mixed="true" abstract="true">
+
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines the base properties for every PnP Provisioning Logic syntax element
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:any minOccurs="1" maxOccurs="1" namespace="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema" processContents="strict">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Represents the XML PnP Provisioning template that the logic applies to
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:any>
+    </xsd:sequence>
+
+    <xsd:attribute name="ID" type="xsd:ID" use="optional">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Defines the unique ID of every logic element
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+  </xsd:complexType>
+
+  <!--
+  Attributes to skip or something else
+  -->
+
+</xsd:schema>

@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<pnpl:ProvisioningLogic xmlns:pnpl="http://schemas.dev.office.com/PnP/2019/06/ProvisioningLogic"
+                        xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
+
+  <pnpl:Variable Type="Integer" Name="iterator">0</pnpl:Variable>
+  <pnpl:Variable Type="String" Name="tenantName">{Context.Tenant.Name}</pnpl:Variable>
+  <pnpl:Variable Type="String" Name="userLoginName">{Context.User.LoginName}</pnpl:Variable>
+  <pnpl:Variable Type="Boolean" Name="userIsAdmin">{Context.User.IsSiteAdmin}</pnpl:Variable>
+
+  <pnpl:ForEach Select="Context.Web.Lists['Sites'].Items">
+    <pnp:Provisioning>
+      <!-- Here a custom provisioning template -->
+    </pnp:Provisioning>
+    <pnpl:Sort Select="Priority" Order="Ascending" DataType="Integer" />
+  </pnpl:ForEach>
+
+  <pnpl:While Test="$iterator &lt; 10">
+    <pnp:Provisioning>
+      <!-- Here a custom provisioning template -->
+    </pnp:Provisioning>
+    <pnpl:SetVariable Name="iterator">$iterator++</pnpl:SetVariable>
+  </pnpl:While>
+
+  <pnpl:Choose>
+    <pnpl:Case Test="Context.Web.Title == 'Something'">
+      <pnp:Provisioning>
+        <!-- Here a custom provisioning template -->
+      </pnp:Provisioning>
+    </pnpl:Case>
+    <pnpl:Case Test="Context.Web.Title == 'Something Else'">
+      <pnp:Provisioning>
+        <!-- Here a custom provisioning template -->
+      </pnp:Provisioning>
+    </pnpl:Case>
+    <pnpl:Otherwise>
+      <pnp:Provisioning>
+        <!-- Here a custom provisioning template -->
+      </pnp:Provisioning>
+    </pnpl:Otherwise>
+  </pnpl:Choose>
+
+  <pnpl:If Test="Context.Site.RootWeb.BaseTemplateID = 'GROUP#0'">
+    <pnp:Provisioning>
+      <!-- Here a custom provisioning template -->
+    </pnp:Provisioning>
+  </pnpl:If>
+
+  <pnpl:OnBehalf User="paolo@piasysdev.onmicrosoft.com">
+    <!-- TODO: How do we want to handle credentials? Credential manager? Access Token? Something else? -->
+    <pnp:Provisioning>
+      <!-- Here a custom provisioning template -->
+    </pnp:Provisioning>
+  </pnpl:OnBehalf>
+
+  <pnpl:Retry HttpStatusCodes="404,429,401" MaxIterations="10" RetryAfter="60">
+    <pnp:Provisioning>
+      <!-- Here a custom provisioning template -->
+    </pnp:Provisioning>
+  </pnpl:Retry>
+
+  <pnpl:Retry MaxIterations="10" RetryAfter="60" RetryIf="!Context.Groups['Sample Group'].Exists">
+    <pnp:Provisioning>
+      <!-- Here a custom provisioning template -->
+    </pnp:Provisioning>
+  </pnpl:Retry>
+
+  <pnpl:ExceptionScope>
+    <pnpl:Try>
+      <pnp:Provisioning>
+        <!-- Here a custom provisioning template -->
+      </pnp:Provisioning>
+    </pnpl:Try>
+    <pnpl:Catch Exception="ApplicationException">
+      <pnp:Provisioning>
+        <!-- Here a custom provisioning template -->
+      </pnp:Provisioning>
+    </pnpl:Catch>
+    <pnpl:Catch Exception="SecurityException">
+      <pnp:Provisioning>
+        <!-- Here a custom provisioning template -->
+      </pnp:Provisioning>
+    </pnpl:Catch>
+    <pnpl:Finally>
+      <pnp:Provisioning>
+        <!-- Here a custom provisioning template -->
+      </pnp:Provisioning>
+    </pnpl:Finally>
+  </pnpl:ExceptionScope>
+
+</pnpl:ProvisioningLogic>
