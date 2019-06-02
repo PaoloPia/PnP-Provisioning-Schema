@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <pnpl:ProvisioningLogic xmlns:pnpl="http://schemas.dev.office.com/PnP/2019/06/ProvisioningLogic"
-                        xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema">
+                        xmlns:pnp="http://schemas.dev.office.com/PnP/2019/03/ProvisioningSchema"
+                        ID="PNP_LOGIC_SAMPLE_01">
 
   <pnpl:Variable Type="Integer" Name="iterator">0</pnpl:Variable>
   <pnpl:Variable Type="String" Name="tenantName">{Context.Tenant.Name}</pnpl:Variable>
@@ -87,4 +88,28 @@
     </pnpl:Finally>
   </pnpl:ExceptionScope>
 
+  <pnpl:Parallel ParallelFlow="WaitAll">
+    <pnpl:ParallelBranch ID="BRANCH01">
+      <pnpl:ProvisioningStatement>
+        <pnp:Provisioning>
+          <!-- Here a custom provisioning template -->
+        </pnp:Provisioning>
+      </pnpl:ProvisioningStatement>
+    </pnpl:ParallelBranch>
+    <pnpl:ParallelBranch ID="BRANCH02">
+      <pnpl:ProvisioningStatement>
+        <pnp:Provisioning>
+          <!-- Here a custom provisioning template -->
+        </pnp:Provisioning>
+      </pnpl:ProvisioningStatement>
+    </pnpl:ParallelBranch>
+    <pnpl:ParallelBranch ID="BRANCH03">
+      <pnpl:Retry MaxIterations="10" RetryAfter="60" RetryIf="!Context.Groups['Sample Group'].Exists">
+        <pnp:Provisioning>
+          <!-- Here a custom provisioning template -->
+        </pnp:Provisioning>
+      </pnpl:Retry>
+    </pnpl:ParallelBranch>
+  </pnpl:Parallel>
+  
 </pnpl:ProvisioningLogic>

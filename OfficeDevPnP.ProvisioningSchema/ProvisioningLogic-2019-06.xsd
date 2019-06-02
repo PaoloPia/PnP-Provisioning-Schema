@@ -10,90 +10,116 @@
   during provisioning of PnP Provisioning Templates
   -->
 
-  <xsd:element name="ProvisioningLogic">
+  <xsd:element name="ProvisioningLogic" type="pnpl:ProvisioningLogic">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
         Defines the root element of a PnP Provisioning Logic
       </xsd:documentation>
     </xsd:annotation>
-    <xsd:complexType>
-      <xsd:choice minOccurs="0" maxOccurs="unbounded">
-
-        <xsd:element name="Variable" type="pnpl:Variable">
-          <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-              Declares a local variable
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        
-        <xsd:element name="SetVariable" type="pnpl:SetVariable">
-          <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-              Defines a setter for a Variable
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-
-        <xsd:element name="ForEach" type="pnpl:ForEach">
-          <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-              Defines a for-each section
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-
-        <xsd:element name="While" type="pnpl:While">
-          <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-              Defines a while section
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        
-        <xsd:element name="Choose" type="pnpl:Choose">
-          <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-              Defines a choose section
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        
-        <xsd:element name="If" type="pnpl:If">
-          <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-              Defines an if section
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        
-        <xsd:element name="OnBehalf" type="pnpl:OnBehalf">
-          <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-              Defines an if section
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-
-        <xsd:element name="Retry" type="pnpl:Retry">
-          <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-              Defines a retry section
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        
-        <xsd:element name="ExceptionScope" type="pnpl:ExceptionScope">
-          <xsd:annotation>
-            <xsd:documentation xml:lang="en">
-              Defines a section that will be executed with a custom exception handling logic
-            </xsd:documentation>
-          </xsd:annotation>
-        </xsd:element>
-        
-      </xsd:choice>
-    </xsd:complexType>
   </xsd:element>
+
+  <xsd:complexType name="ProvisioningLogic">
+    <xsd:choice minOccurs="0" maxOccurs="unbounded">
+
+      <xsd:element name="Variable" type="pnpl:Variable">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Declares a local variable
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+        
+      <xsd:element name="SetVariable" type="pnpl:SetVariable">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines a setter for a Variable
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="ForEach" type="pnpl:ForEach">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines a for-each section
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="While" type="pnpl:While">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines a while section
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+        
+      <xsd:element name="Choose" type="pnpl:Choose">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines a choose section
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+        
+      <xsd:element name="If" type="pnpl:If">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines an if section
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+        
+      <xsd:element name="OnBehalf" type="pnpl:OnBehalf">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines an if section
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="Retry" type="pnpl:Retry">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines a retry section
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="Parallel" type="pnpl:Parallel">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines a section that will execute multiple branches in parallel
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="ExceptionScope" type="pnpl:ExceptionScope">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines a section that will be executed with a custom exception handling logic
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+      <xsd:element name="ProvisioningStatement" type="pnpl:ProvisioningStatement">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines a section that will simply execute a provisioning statement
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+
+    </xsd:choice>
+
+    <xsd:attribute name="ID" type="xsd:ID" use="required">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Defines the unique ID of the ProvisioningLogic element
+        </xsd:documentation>
+      </xsd:annotation>
+    </xsd:attribute>
+
+  </xsd:complexType>
 
   <xsd:complexType name="ForEach" mixed="true">
     <xsd:annotation>
@@ -284,7 +310,7 @@
   <xsd:complexType name="OnBehalf">
     <xsd:annotation>
       <xsd:documentation xml:lang="en">
-        Defines a section that will be execute OnBehalf of the provided user
+        Defines a section that will be executed OnBehalf of the provided user
       </xsd:documentation>
     </xsd:annotation>
 
@@ -298,6 +324,65 @@
             </xsd:documentation>
           </xsd:annotation>
         </xsd:attribute>
+      </xsd:extension>
+    </xsd:complexContent>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="Parallel">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a section that will execute multiple branches in parallel
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:sequence>
+      <xsd:element name="ParallelBranch" type="pnpl:ProvisioningLogic" minOccurs="1" maxOccurs="unbounded">
+        <xsd:annotation>
+          <xsd:documentation xml:lang="en">
+            Defines a branch for the Parallel
+          </xsd:documentation>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>        
+        
+    <xsd:attribute name="ParallelFlow">
+      <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+          Defines the flow to follow when executing branches in parallel
+        </xsd:documentation>
+      </xsd:annotation>
+      <xsd:simpleType>
+        <xsd:restriction base="xsd:string">
+          <xsd:enumeration value="WaitAll">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Requires all the branches to complete, before completing the Parallel block
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+          <xsd:enumeration value="WaitOne">
+            <xsd:annotation>
+              <xsd:documentation xml:lang="en">
+                Completes the Parallel block as soon as one of the branches completes
+              </xsd:documentation>
+            </xsd:annotation>
+          </xsd:enumeration>
+        </xsd:restriction>
+      </xsd:simpleType>
+    </xsd:attribute>
+
+  </xsd:complexType>
+
+  <xsd:complexType name="ProvisioningStatement" mixed="true">
+    <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+        Defines a section that will simply execute a provisioning statement
+      </xsd:documentation>
+    </xsd:annotation>
+
+    <xsd:complexContent>
+      <xsd:extension base="pnpl:BaseLogicElement">
       </xsd:extension>
     </xsd:complexContent>
 
@@ -513,9 +598,5 @@
     </xsd:attribute>
 
   </xsd:complexType>
-
-  <!--
-  Attributes to skip or something else
-  -->
 
 </xsd:schema>
